@@ -9,8 +9,8 @@ using namespace std;
 
 
 vector<vector<int>> generateSchedule(int n) {
-    vector<vector<int>> schedule; // This will store the schedule
-    vector<int> players(n); // This will store the players' indices
+    vector<vector<int>> schedule;
+    vector<int> players(n);
 
     for (int i = 0; i < n; ++i) {
         players[i] = i;
@@ -21,7 +21,7 @@ vector<vector<int>> generateSchedule(int n) {
         n++;
     }
 
-    int rounds = n - 1; // Kiek bus roundu
+    int rounds = n - 1; // Kiek bus raundu
 
     for (int round = 0; round < rounds; round++) {
         vector<int> matches;
@@ -29,9 +29,9 @@ vector<vector<int>> generateSchedule(int n) {
             matches.push_back(players[i]);
             matches.push_back(players[n - 1 - i]);
         }
-        schedule.push_back(matches); // Add the matches of this round to the schedule
+        schedule.push_back(matches);
 
-        // Rotate players to generate the next round's matches
+        // Rotacija
         int last = players[n - 1];
         for (int i = n - 1; i > 1; i--) {
             players[i] = players[i - 1];
@@ -42,7 +42,6 @@ vector<vector<int>> generateSchedule(int n) {
     return schedule;
 }
 
-// Function to print the schedule of matches
 void printSchedule(const vector<vector<int>>& schedule) {
     for (int round = 0; round < schedule.size(); round++) {
         cout << "Round " << round + 1 << ": " << endl;
@@ -50,7 +49,7 @@ void printSchedule(const vector<vector<int>>& schedule) {
             int player1 = schedule[round][i];
             int player2 = schedule[round][i + 1];
             if (player1 != -1 && player2 != -1) {
-                cout << "Player " << player1 + 1 << " vs Player " << player2 + 1 << "\n";
+                cout << "Player " << player1 + 1 << " vs Player " << player2 + 1 << " " << endl;
             }
         }
         cout << endl;
@@ -66,7 +65,7 @@ int main() {
 
     vector<vector<int>> schedule;
     schedule = generateSchedule(n);
-    printSchedule(schedule); 
+    printSchedule(schedule);
 
     return 0;
 }
