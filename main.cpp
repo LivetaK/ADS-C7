@@ -7,6 +7,20 @@
 
 using namespace std;
 
+vector<vector<int>> generateSchedule(int n);
+void printSchedule(const vector<vector<int>>& schedule);
+
+int main() {
+    int n;
+    cout << "Kiek yra zaideju?: ";
+    cin >> n;
+
+    vector<vector<int>> schedule;
+    schedule = generateSchedule(n);
+    printSchedule(schedule);
+
+    return 0;
+}
 
 vector<vector<int>> generateSchedule(int n) {
     vector<vector<int>> schedule;
@@ -54,18 +68,4 @@ void printSchedule(const vector<vector<int>>& schedule) {
         }
         cout << endl;
     }
-}
-
-
-
-int main() {
-    int n;
-    cout << "Kiek yra zaideju?: ";
-    cin >> n;
-
-    vector<vector<int>> schedule;
-    schedule = generateSchedule(n);
-    printSchedule(schedule);
-
-    return 0;
 }
