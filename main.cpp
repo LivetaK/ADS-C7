@@ -4,48 +4,36 @@
 // Jei žaidėjų skaičius 2k, tai pirmoji pusė žaidėjų sulošia k partijų balta ir k-1 partijų juoda spalva.
 #include <iostream>
 #include <vector>
-#include <iomanip>
 
 using namespace std;
 
-void printSchedule(const vector<vector<pair<int, int>>>& schedule, int n) {
-    for (int round = 0; round < schedule.size(); ++round) {
-        cout << "Round " << round + 1 << ":" << endl;
-        for (auto match : schedule[round]) {
-            if (match.first == -1 || match.second == -1) {
-                continue;
-            }
-            cout << "Player " << match.first + 1 << " vs Player " << match.second + 1 << "\n";
-        }
-        cout << endl;
-    }
-}
 
-vector<vector<pair<int, int>>> generateSchedule(int n) {
-    vector<vector<pair<int, int>>> schedule;
-    vector<int> players(n);
+vector<vector<int>> generateSchedule(int n) {
+    vector<vector<int>> schedule; // This will store the schedule
+    vector<int> players(n); // This will store the players' indices
+
     for (int i = 0; i < n; ++i) {
         players[i] = i;
     }
 
-    if (n % 2 == 1) {
-        players.push_back(-1);  // Pridedame fiktyvų žaidėją, jei žaidėjų skaičius nelyginis
+    if (n % 2 == 1) { // jei skaicius nelyginis
+        players.push_back(-1); // 
         n++;
     }
 
-    int rounds = n - 1;
-    for (int round = 0; round < rounds; ++round) {
-        vector<pair<int, int>> matches;
-        for (int i = 0; i < n / 2; ++i) {
-            if (players[i] != -1 && players[n - 1 - i] != -1) {
-                matches.push_back({ players[i], players[n - 1 - i] });
-            }
-        }
-        schedule.push_back(matches);
+    int rounds = n - 1; // Kiek bus roundu
 
-        // Sukamasis ratas
+    for (int round = 0; round < rounds; round++) {
+        vector<int> matches;
+        for (int i = 0; i < n / 2; i++) {
+            matches.push_back(players[i]);
+            matches.push_back(players[n - 1 - i]);
+        }
+        schedule.push_back(matches); // Add the matches of this round to the schedule
+
+        // Rotate players to generate the next round's matches
         int last = players[n - 1];
-        for (int i = n - 1; i > 1; --i) {
+        for (int i = n - 1; i > 1; i--) {
             players[i] = players[i - 1];
         }
         players[1] = last;
@@ -54,18 +42,31 @@ vector<vector<pair<int, int>>> generateSchedule(int n) {
     return schedule;
 }
 
+// Function to print the schedule of matches
+void printSchedule(const vector<vector<int>>& schedule) {
+    for (int round = 0; round < schedule.size(); round++) {
+        cout << "Round " << round + 1 << ": " << endl;
+        for (int i = 0; i < schedule[round].size(); i += 2) {
+            int player1 = schedule[round][i];
+            int player2 = schedule[round][i + 1];
+            if (player1 != -1 && player2 != -1) {
+                cout << "Player " << player1 + 1 << " vs Player " << player2 + 1 << "\n";
+            }
+        }
+        cout << endl;
+    }
+}
+
+
+
 int main() {
     int n;
-    cout << "Enter the number of players: ";
+    cout << "Kiek yra zaideju?: ";
     cin >> n;
 
-    if (n <= 1) {
-        cout << "Number of players must be greater than 1." << endl;
-        return 1;
-    }
-
-    vector<vector<pair<int, int>>> schedule = generateSchedule(n);
-    printSchedule(schedule, n);
+    vector<vector<int>> schedule;
+    schedule = generateSchedule(n);
+    printSchedule(schedule); 
 
     return 0;
 }
